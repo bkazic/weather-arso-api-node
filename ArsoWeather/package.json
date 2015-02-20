@@ -1,0 +1,10 @@
+{
+  "name": "ArsoWeather",
+  "version": "0.0.0",
+  "description": "ArsoWeather",
+  "main": "app.js",
+  "author": {
+    "name": "bkazic",
+    "email": ""
+  }
+}
