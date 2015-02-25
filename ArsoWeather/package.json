@@ -6,5 +6,8 @@
   "author": {
     "name": "bkazic",
     "email": ""
+  },
+  "dependencies": {
+    "request": "^2.53.0"
   }
 }
