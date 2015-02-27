@@ -12,3 +12,10 @@ weatherArso.weatherData("2015-02-03", function (err, data) {
 
 // Print constructed url
 console.log(weatherArso.buildUrl("2015-02-03"))
+
+
+// Test request with start day and end day
+weatherArso.weatherData("2015-02-03", "2015-02-04", function (err, data) {
+    if (err) throw err;
+    console.log(JSON.stringify(data));
+})

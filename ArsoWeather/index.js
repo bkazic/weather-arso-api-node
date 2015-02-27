@@ -13,12 +13,31 @@ var defaultParams = {
 // Main object
 function WeatherArso() {
     this.baseUrl = "http://meteo.arso.gov.si/webmet/archive/data.xml";
+
+    this.lang = 'en';
+    this.vars = [12, 19],
+    this.group = 'halfhourlyData0',
+    this.type = 'halfhourly',
+    this.id = 1828 // Ljubljana - Bezigrad
 }
 
 // Get weather data for specific time
-WeatherArso.prototype.weatherData = function (time, callback) {   
-    var url = this.buildUrl(time);
+WeatherArso.prototype.weatherData = function (time, time2, options, callback) {
+    var d1 = time;
+    var d2 = time2;
 
+    if (typeof time2 === "function") {
+        callback = time2;
+        d2 = time;
+        options = {};
+    }
+    
+    if (typeof options === "function") {
+        callback = options;
+        options = {};
+    }
+
+    var url = this.buildUrl(d1, d2, options);
     this.makeRequest(url, function (err, data) {
         if (err) return callback(err);
         return callback(null, data);
@@ -27,11 +46,12 @@ WeatherArso.prototype.weatherData = function (time, callback) {
 
 // TODO: Find better way to construct url (something like string format in python)
 // Build url request for specific time
-WeatherArso.prototype.buildUrl = function (time) {
+WeatherArso.prototype.buildUrl = function (d1, d2, options) {
+
     var url = this.baseUrl + "?lang=" + defaultParams.lang + "&vars=" + 
         defaultParams.vars.toString() + "&group=" + defaultParams.group + 
         "&type=" + defaultParams.type + "&id=" + defaultParams.id + 
-        "&d1=" + time + "&d2=" + time
+        "&d1=" + d1 + "&d2=" + d2
 
     return url
 }
