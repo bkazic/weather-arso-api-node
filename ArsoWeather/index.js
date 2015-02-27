@@ -3,7 +3,8 @@
 // Default parameters when making request
 var defaultParams = {
     lang: 'en',
-    vars: [12, 19, 13, 20, 14, 26, 2, 21, 15, 23, 16, 24, 17, 27, 4, 28, 18],
+    //vars: [12, 19, 13, 20, 14, 26, 2, 21, 15, 23, 16, 24, 17, 27, 4, 28, 18],
+    vars: [12, 19],
     group: 'halfhourlyData0',
     type: 'halfhourly',
     id: 1828 // Ljubljana - Bezigrad
@@ -48,7 +49,7 @@ WeatherArso.prototype.makeRequest = function (url, callback) {
     })
 }
 
-
+// Parse requested data to JSON
 function parseXmlToJson(data) {
     
     subString = data.substring(data.indexOf("{ baseurl"), data.indexOf("}}}}") + 4)
@@ -59,13 +60,30 @@ function parseXmlToJson(data) {
     formatOutput(jsonData)
 }
 
+
+// TODO: comment this function better
 function formatOutput(jsonData) {
-    var obj = jsonData["points"]["_1828"];
-    
+    var obj = jsonData["points"]["_"+defaultParams.id];
+    var outObj = {}
+    outObj["list"] = []
+
     for (var key in obj) {
-        //console.log(' name=' + key + ' value=' + JSON.stringify(obj[key]));
-        console.log(parseTimestamp(Number(key.substring(1))))
+        var timestamp = parseTimestamp(Number(key.substring(1)))
+        var measurements = obj[key]
+        
+        console.log(timestamp) // TODO: debuging. delete this later.
+
+        var jsonObj = {};
+        for (measure in measurements) {
+            jsonObj[jsonData["params"][measure]["name"]] = measurements[measure]
+        }
+        jsonObj["ts"] = timestamp.getTime() / 1000; //convert from ms to s
+        jsonObj["dateTime"] = timestamp.getDateTimeString(); //convert from ms to s
+        
+        //console.log(JSON.stringify(jsonObj));
+        outObj["list"].push(jsonObj)
     }
+    console.log(JSON.stringify(outObj))
 }
 
 
@@ -73,6 +91,18 @@ function formatOutput(jsonData) {
 function parseTimestamp(timestamp) {
     var startDate = new Date("Wed Jan 01 1800 00:00:00 GMT+0100")   
     return new Date(startDate.getTime() + timestamp * 60000);
+}
+
+
+// Format date to DateTime string
+Date.prototype.getDateTimeString = function () {
+    var year = this.getFullYear();
+    var month = ("0" + (this.getMonth() + 1)).slice(-2)
+    var day = ("0" + this.getDate()).slice(-2)
+    var hour = ("0" + this.getHours()).slice(-2)
+    var minutes = ("0" + this.getMinutes()).slice(-2)
+
+    return String(year + "-" + month + "-" + day + " " + hour + ":" + minutes)
 }
 
 
