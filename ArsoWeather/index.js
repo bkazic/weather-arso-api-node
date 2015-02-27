@@ -1,5 +1,4 @@
 ﻿var request = require("request");
-var xml2js = require("xml2js");
 
 // Default parameters when making request
 var defaultParams = {

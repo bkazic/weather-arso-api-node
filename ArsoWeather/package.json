@@ -8,7 +8,6 @@
     "email": ""
   },
   "dependencies": {
-    "request": "^2.53.0",
-    "xml2js": "^0.4.5"
+    "request": "^2.53.0"
   }
 }
