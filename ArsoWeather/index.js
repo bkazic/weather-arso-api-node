@@ -43,21 +43,21 @@ WeatherArso.prototype.makeRequest = function (url, callback) {
         if (response.statusCode !== 200) throw new WeatherArsoError("Request Failed")
         
         //TODO: parse body here!
-        parseXmlToJson(body)
+        data = parseToJson(body)
      
-        return callback(null, body)
+        return callback(null, data)
     })
 }
 
 // Parse requested data to JSON
-function parseXmlToJson(data) {
+function parseToJson(data) {
     
     subString = data.substring(data.indexOf("{ baseurl"), data.indexOf("}}}}") + 4)
     subStringFixed = subString.replace(/(['"])?([a-zA-Z0-9_]+)(['"])?:/g, '"$2": ');
     subStringFixed = subStringFixed.replace("\"HH\"", "HH")
     jsonData = JSON.parse(subStringFixed)
 
-    formatOutput(jsonData)
+    return formatOutput(jsonData)
 }
 
 
@@ -65,25 +65,23 @@ function parseXmlToJson(data) {
 function formatOutput(jsonData) {
     var obj = jsonData["points"]["_"+defaultParams.id];
     var outObj = {}
-    outObj["list"] = []
+    outObj["data"] = []
 
     for (var key in obj) {
         var timestamp = parseTimestamp(Number(key.substring(1)))
         var measurements = obj[key]
-        
-        console.log(timestamp) // TODO: debuging. delete this later.
-
         var jsonObj = {};
+
+        jsonObj["ts"] = timestamp.getTime() / 1000; //convert from ms to s
+        jsonObj["dateTime"] = timestamp.getDateTimeString(); //convert from ms to s
+
         for (measure in measurements) {
             jsonObj[jsonData["params"][measure]["name"]] = measurements[measure]
         }
-        jsonObj["ts"] = timestamp.getTime() / 1000; //convert from ms to s
-        jsonObj["dateTime"] = timestamp.getDateTimeString(); //convert from ms to s
         
-        //console.log(JSON.stringify(jsonObj));
-        outObj["list"].push(jsonObj)
+        outObj["data"].push(jsonObj)
     }
-    console.log(JSON.stringify(outObj))
+    return outObj;
 }
 
 

@@ -7,7 +7,7 @@ var weatherArso = new WeatherArso()
 // Request url and display output
 weatherArso.weatherData("2015-02-03", function (err, data) {
     if (err) throw err;
-    //console.log(data);
+    console.log(JSON.stringify(data));
 })
 
 // Print constructed url
