@@ -12,7 +12,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>cd0f6312-b68e-472d-a68d-c7900fb8569d</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>test\test.js</StartupFile>
+    <StartupFile>example\example-test.js</StartupFile>
     <StartWebBrowser>False</StartWebBrowser>
     <SearchPath>
     </SearchPath>
@@ -30,12 +30,16 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="example\example-test.js" />
     <Compile Include="index.js" />
-    <Compile Include="test\test.js" />
+    <Compile Include="test\test.js">
+      <TestFramework>Mocha</TestFramework>
+    </Compile>
     <Content Include="package.json" />
     <Content Include="README.md" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="example\" />
     <Folder Include="test\" />
   </ItemGroup>
   <!-- Do not delete the following Import Project.  While this appears to do nothing it is a marker for setting TypeScript properties before our import that depends on them. -->
