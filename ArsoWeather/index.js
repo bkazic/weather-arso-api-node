@@ -13,6 +13,7 @@ var defaultParams = {
 // Main object
 function WeatherArso(options) {
     this.baseUrl = "http://meteo.arso.gov.si/webmet/archive/data.xml";
+    
     if (typeof options !== "undefined") this.checkOptions(options);
     this.params = defaultParams;
 }
@@ -65,13 +66,11 @@ WeatherArso.prototype.buildUrl = function (d1, d2) {
 WeatherArso.prototype.checkOptions = function (options, copy) {
     // If copy is false, newParams will copy reference from defaultParams and make permanent change.
     var newParams = (copy === true) ? JSON.parse(JSON.stringify(defaultParams)) : defaultParams; 
-
     for (key in defaultParams) {
         if (options[key]) {
             newParams[key] = options[key];
         }
     }
-
     this.params = newParams;
 }
 
@@ -102,10 +101,12 @@ function parseToJson(data) {
 
 // TODO: comment this function better
 function formatOutput(jsonData) {
-    var obj = jsonData["points"]["_"+defaultParams.id];
-    var outObj = {}
-
-    outObj["data"] = []
+    var id = Object.keys(jsonData["points"])[0];
+    var obj = jsonData["points"][id];
+    var outObj = {};
+    
+    outObj["id"] = id;
+    outObj["data"] = [];
 
     for (var key in obj) {
         var timestamp = parseTimestamp(Number(key.substring(1)))
@@ -116,10 +117,10 @@ function formatOutput(jsonData) {
         jsonObj["dateTime"] = timestamp.getDateTimeString(); //convert from ms to s
 
         for (measure in measurements) {
-            jsonObj[jsonData["params"][measure]["name"]] = measurements[measure]
+            jsonObj[jsonData["params"][measure]["name"]] = measurements[measure];
         }
         
-        outObj["data"].push(jsonObj)
+        outObj["data"].push(jsonObj);
     }
     return outObj;
 }
