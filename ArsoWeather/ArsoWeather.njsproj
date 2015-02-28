@@ -12,7 +12,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>cd0f6312-b68e-472d-a68d-c7900fb8569d</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>example\example-test.js</StartupFile>
+    <StartupFile>example\create-dataset.js</StartupFile>
     <StartWebBrowser>False</StartWebBrowser>
     <SearchPath>
     </SearchPath>
@@ -31,6 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="example\example-test.js" />
+    <Compile Include="example\create-dataset.js" />
     <Compile Include="index.js" />
     <Compile Include="test\test.js">
       <TestFramework>Mocha</TestFramework>

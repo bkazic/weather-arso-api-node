@@ -61,7 +61,6 @@ WeatherArso.prototype.buildUrl = function (d1, d2) {
     return url
 }
 
-
 // Check if any of options key are the same as in defaultParams. If yes, overwrite their value.
 WeatherArso.prototype.checkOptions = function (options, copy) {
     // If copy is false, newParams will copy reference from defaultParams and make permanent change.
@@ -73,7 +72,6 @@ WeatherArso.prototype.checkOptions = function (options, copy) {
     }
     this.params = newParams;
 }
-
 
 // Make request and parse the result
 WeatherArso.prototype.makeRequest = function (url, callback) {
@@ -98,14 +96,13 @@ function parseToJson(data) {
     return formatOutput(jsonData)
 }
 
-
 // TODO: comment this function better
 function formatOutput(jsonData) {
     var id = Object.keys(jsonData["points"])[0];
     var obj = jsonData["points"][id];
     var outObj = {};
     
-    outObj["id"] = id;
+    outObj["id"] = Number(id.substring(1));
     outObj["data"] = [];
 
     for (var key in obj) {
@@ -125,13 +122,20 @@ function formatOutput(jsonData) {
     return outObj;
 }
 
-
 // Transforms timestamp from Arso service to date
 function parseTimestamp(timestamp) {
     var startDate = new Date("Wed Jan 01 1800 00:00:00 GMT+0100")   
     return new Date(startDate.getTime() + timestamp * 60000);
 }
 
+// Format date to Date string
+Date.prototype.getDateString = function () {
+    var year = this.getFullYear();
+    var month = ("0" + (this.getMonth() + 1)).slice(-2)
+    var day = ("0" + this.getDate()).slice(-2)
+    
+    return String(year + "-" + month + "-" + day)
+}
 
 // Format date to DateTime string
 Date.prototype.getDateTimeString = function () {
@@ -144,6 +148,12 @@ Date.prototype.getDateTimeString = function () {
     return String(year + "-" + month + "-" + day + " " + hour + ":" + minutes)
 }
 
+// Function to add days to date
+Date.prototype.addDays = function (days) {
+    var dat = new Date(this.valueOf());
+    dat.setDate(dat.getDate() + days);
+    return dat;
+}
 
 // Custom Error message
 function WeatherArsoError(msg) {
