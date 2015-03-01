@@ -3,8 +3,7 @@
 // Default parameters when making request
 var defaultParams = {
     lang: 'en',
-    //vars: [12, 19, 13, 20, 14, 26, 2, 21, 15, 23, 16, 24, 17, 27, 4, 28, 18],
-    vars: [12, 19],
+    vars: [12, 19, 13, 20, 14, 26, 2, 21, 15, 23, 16, 24, 17, 27, 4, 28, 18],
     group: 'halfhourlyData0',
     type: 'halfhourly',
     id: 1828 // Ljubljana - Bezigrad

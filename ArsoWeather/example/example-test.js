@@ -1,6 +1,5 @@
 ﻿var assert = require('assert');
 var WeatherArso = require('../');
-// TODO: Maybe do unit test with mocha
 
 var weatherArso = new WeatherArso()
 //var weatherArso = new WeatherArso({id: 1872})
