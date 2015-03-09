@@ -33,6 +33,7 @@ var callback = function (err, data) {
     
     var date = startDate.addDays(i++)
     if (date.setHours(0, 0, 0, 0) > endDate.setHours(0, 0, 0, 0)) return;
+
     weatherArso.weatherData(date.getDateString(), callback)
 };
 

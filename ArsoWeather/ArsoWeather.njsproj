@@ -12,7 +12,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>cd0f6312-b68e-472d-a68d-c7900fb8569d</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>example\create-csv-dataset.js</StartupFile>
+    <StartupFile>example\bilje-dataset.js</StartupFile>
     <StartWebBrowser>False</StartWebBrowser>
     <SearchPath>
     </SearchPath>
@@ -30,6 +30,7 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="example\bilje-dataset.js" />
     <Compile Include="example\create-csv.js" />
     <Compile Include="example\create-csv-dataset.js" />
     <Compile Include="example\example-test.js" />
