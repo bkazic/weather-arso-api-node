@@ -10,7 +10,11 @@ console.log(JSON.stringify(weatherArso.params))
 // Request url and display output
 weatherArso.weatherData("2015-02-03", function (err, data) {
     if (err) throw err;
-    console.log(JSON.stringify(data));
+    console.log(JSON.stringify(data.header[4]));
+    var test = data.header.map(function (element) {
+        return element.name;
+    })
+    console.log(test)
 })
 
 // Test constructed url

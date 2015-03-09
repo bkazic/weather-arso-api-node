@@ -14,8 +14,13 @@ var endDate = new Date("2015-02-06")
 
 var callback = function (err, data) {
     if (err) throw err;
+    
+    var headerData = ["dateTime"]
+    data.header.forEach(function (element) {
+        headerData.push(element.name);
+    })
 
-    json2csv({ data: data.data, fields: ['dateTime', 'p', 'rh'] }, function (err, csv) {
+    json2csv({ data: data.data, fields: headerData }, function (err, csv) {
         if (err) console.log(err);
 
         var callback2 = function (err) {

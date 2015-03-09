@@ -1,4 +1,5 @@
 ﻿var request = require("request");
+var xml2js = require('xml2js');
 
 // Default parameters when making request
 var defaultParams = {
@@ -78,31 +79,54 @@ WeatherArso.prototype.makeRequest = function (url, callback) {
         if (error) return callback(error);
         if (response.statusCode !== 200) throw new WeatherArsoError("Request Failed")
         
-        data = parseToJson(body)
+        //data = parseBody(body)
+        data = formatOutput(body)
      
         return callback(null, data)
     })
 }
 
-// Parse requested data to JSON
-function parseToJson(data) {
+// Parse requested data body to JSON
+function parseBody(data) {
     
     subString = data.substring(data.indexOf("{ baseurl"), data.indexOf("}}}}") + 4)
     subStringFixed = subString.replace(/(['"])?([a-zA-Z0-9_]+)(['"])?:/g, '"$2": ');
     subStringFixed = subStringFixed.replace("\"HH\"", "HH")
-    jsonData = JSON.parse(subStringFixed)
+    bodyData = JSON.parse(subStringFixed)
 
-    return formatOutput(jsonData)
+    //return formatOutput(jsonData)
+    return bodyData
+}
+
+// Parse requested data header to JSON
+function parseHeader(data) {
+    
+    var parser = new xml2js.Parser();
+    var headerData = []
+
+    parser.parseString(data, function (err, result) {
+        var arr = result.pujs.params[0].p;
+        arr.forEach(function (element) {
+            headerData.push(element["$"])   
+        })
+    });
+
+    return headerData;
 }
 
 // TODO: comment this function better
-function formatOutput(jsonData) {
-    var id = Object.keys(jsonData["points"])[0];
-    var obj = jsonData["points"][id];
+function formatOutput(body) {
+    
+    var header = parseHeader(body);
+    var bodyJson = parseBody(body);
+
+    var id = Object.keys(bodyJson["points"])[0];
+    var obj = bodyJson["points"][id];
     var outObj = {};
     
     outObj["id"] = Number(id.substring(1));
     outObj["data"] = [];
+    outObj["header"] = header; //TODO
 
     for (var key in obj) {
         var timestamp = parseTimestamp(Number(key.substring(1)))
@@ -113,7 +137,7 @@ function formatOutput(jsonData) {
         jsonObj["dateTime"] = timestamp.getDateTimeString(); //convert from ms to s
 
         for (measure in measurements) {
-            jsonObj[jsonData["params"][measure]["name"]] = measurements[measure];
+            jsonObj[bodyJson["params"][measure]["name"]] = measurements[measure];
         }
         
         outObj["data"].push(jsonObj);

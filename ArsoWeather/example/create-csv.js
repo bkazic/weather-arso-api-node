@@ -8,8 +8,13 @@ var weatherArso = new WeatherArso({ vars: [12, 18] })
 
 weatherArso.weatherData("2015-02-03", function (err, data) {
     if (err) throw err;
+    
+    var headerData = ["dateTime"]
+    data.header.forEach(function (element) {
+        headerData.push(element.name);
+    })
 
-    json2csv({ data: data.data, fields: ['dateTime', 'p', 'rh'] }, function (err, csv) {
+    json2csv({ data: data.data, fields: headerData }, function (err, csv) {
         if (err) console.log(err);
         fs.writeFile('./example/file.csv', csv, function (err) {
             if (err) throw err;
