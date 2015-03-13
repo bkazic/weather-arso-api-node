@@ -7,7 +7,7 @@ var weatherArso = new WeatherArso()
 
 describe('WeatherArso', function () {
     describe('#weatherData()', function () {
-        this.timeout(6000); // Increase mocha timeouts
+        this.timeout(10000); // Increase mocha timeouts
 
         it('should return weather data for Ljubljana Bezigrad for specific date', function (done) {
             weatherArso.weatherData("2015-02-03", function (err, data) {
