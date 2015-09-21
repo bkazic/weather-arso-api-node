@@ -1,6 +1,6 @@
 {
   "name": "arso-weather",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Slovenian historical and current weather data. Arso archive wrapper for node.",
   "main": "index.js",
   "author": {
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-	"url": "https://github.com/bkazic/weather-arso-api-node"
+    "url": "https://github.com/bkazic/weather-arso-api-node"
   },
   "scripts": {
     "test": "mocha"
