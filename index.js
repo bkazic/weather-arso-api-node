@@ -178,14 +178,14 @@ Date.prototype.addDays = function (days) {
     return dat;
 }
 
-// Custom Error message
+// Custom Error message 
+// (ref: http://j-query.blogspot.si/2014/03/custom-error-objects-in-javascript.html)
 function WeatherArsoError(msg) {
-    this.name = "WeatherArsoError"
-    this.message = msg
-    this.toString = function () {
-        return this.name + ": " + this.message;
-    }
+    Error.captureStackTrace(this);
+    this.message = msg;
+    this.name = "WeatherArsoError";
 }
+WeatherArsoError.prototype = Object.create(Error.prototype);
 
 // Exports
 module.exports = WeatherArso;

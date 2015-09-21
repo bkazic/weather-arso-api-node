@@ -1,5 +1,4 @@
-﻿var assert = require('assert');
-var fs = require('fs');
+﻿var fs = require('fs');
 var json2csv = require('json2csv');
 var WeatherArso = require('../');
 
